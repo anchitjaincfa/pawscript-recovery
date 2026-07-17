@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Pawscript creates clinician-reviewed, home-specific post-operative recovery-plan drafts." />
+  <title>Pawscript | Recovery without the guesswork</title>
+  <style>
+    :root { --ink:#10221c; --muted:#5c6d66; --line:#d9e4de; --paper:#fbfcfa; --wash:#eef6f0; --mint:#8de0bb; --green:#176b4a; --deep:#0d3f2d; --orange:#f8b45c; --rose:#b84e4e; --shadow:0 18px 50px rgba(22,67,47,.12); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height:1.5; }
+    button, input, select, textarea { font:inherit; }
+    button { cursor:pointer; }
+    .wrap { width:min(1160px, calc(100% - 40px)); margin:0 auto; }
+    .site-header { padding:22px 0; display:flex; align-items:center; justify-content:space-between; }
+    .brand { color:var(--deep); font-size:1.32rem; font-weight:800; text-decoration:none; letter-spacing:-.04em; display:flex; gap:9px; align-items:center; }
+    .brand-mark { width:29px; height:29px; border-radius:50% 50% 45% 45%; background:var(--mint); display:grid; place-items:center; font-size:14px; }
+    .mode { color:var(--green); background:var(--wash); border:1px solid #c8e6d6; border-radius:999px; padding:7px 11px; font-size:.77rem; font-weight:700; }
+    .top-note { border:1px solid #f0c985; color:#66420b; background:#fff9ed; padding:13px 16px; border-radius:12px; font-size:.91rem; margin:0 auto 34px; max-width:1160px; }
+    .hero { display:grid; grid-template-columns:.92fr 1.08fr; gap:54px; align-items:start; padding:34px 0 72px; }
+    .eyebrow { text-transform:uppercase; letter-spacing:.12em; font-weight:800; color:var(--green); font-size:.72rem; }
+    h1 { font-size:clamp(2.85rem, 5.7vw, 5.15rem); letter-spacing:-.075em; line-height:.98; margin:12px 0 22px; max-width:620px; }
+    .lede { font-size:1.12rem; color:var(--muted); max-width:540px; margin:0 0 30px; }
+    .principles { display:grid; gap:13px; margin-top:35px; }
+    .principle { display:flex; gap:12px; align-items:flex-start; }
+    .num { width:27px; height:27px; flex:none; border-radius:50%; display:grid; place-items:center; font-size:.8rem; font-weight:800; background:var(--mint); color:var(--deep); }
+    .principle b { display:block; font-size:.92rem; }
+    .principle p { margin:1px 0 0; color:var(--muted); font-size:.85rem; }
+    .form-card { background:#fff; border:1px solid var(--line); padding:27px; border-radius:22px; box-shadow:var(--shadow); }
+    .form-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; padding-bottom:20px; border-bottom:1px solid var(--line); }
+    .form-head h2 { margin:0; letter-spacing:-.04em; font-size:1.35rem; }
+    .form-head p { margin:3px 0 0; font-size:.84rem; color:var(--muted); }
+    .progress { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; padding:22px 0 17px; }
+    .progress button { border:0; padding:0; background:none; text-align:left; color:#9aa9a2; font-size:.72rem; font-weight:800; }
+    .progress i { display:block; height:4px; border-radius:99px; margin-bottom:6px; background:#e4ebe6; }
+    .progress .active, .progress .complete { color:var(--green); }
+    .progress .active i, .progress .complete i { background:var(--green); }
+    fieldset { border:0; padding:0; margin:0; }
+    .step { display:none; }
+    .step.active { display:block; animation:rise .24s ease-out; }
+    @keyframes rise { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+    legend { font-size:1.16rem; font-weight:800; letter-spacing:-.025em; margin-bottom:6px; }
+    .hint { color:var(--muted); font-size:.83rem; margin:0 0 19px; }
+    .fields { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:15px; }
+    .field { display:grid; gap:6px; }
+    .field.full { grid-column:1 / -1; }
+    label { font-size:.8rem; font-weight:800; color:#3d5148; }
+    .req { color:var(--rose); }
+    input, select, textarea { width:100%; border:1px solid #cbd8d1; border-radius:9px; color:var(--ink); background:#fff; padding:10px 11px; outline:none; }
+    textarea { min-height:82px; resize:vertical; }
+    input:focus, select:focus, textarea:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(23,107,74,.11); }
+    .switch { display:flex; gap:9px; padding-top:13px; }
+    .button { border:0; border-radius:9px; padding:11px 15px; font-weight:800; background:var(--green); color:white; transition:transform .15s, background .15s; }
+    .button:hover { background:var(--deep); transform:translateY(-1px); }
+    .button.secondary { background:#edf3ef; color:var(--deep); }
+    .button.secondary:hover { background:#dfece4; }
+    .button:disabled { opacity:.55; cursor:not-allowed; transform:none; }
+    .privacy { margin-top:17px; border-top:1px solid var(--line); padding-top:14px; color:var(--muted); font-size:.76rem; }
+    .error { display:none; margin:0 0 15px; background:#fff0ef; color:#7d302d; border:1px solid #efc3c0; border-radius:9px; padding:10px 11px; font-size:.84rem; }
+    .error.show { display:block; }
+    #result { background:var(--wash); border-top:1px solid #d5e5da; padding:62px 0 74px; }
+    #result[hidden] { display:none; }
+    .result-head { display:flex; justify-content:space-between; gap:18px; align-items:flex-end; margin-bottom:25px; }
+    .result-head h2 { font-size:clamp(2rem,4vw,3rem); letter-spacing:-.06em; margin:7px 0 0; }
+    .review-chip { display:inline-flex; color:#663f08; background:#fff4dc; border:1px solid #edcf9d; padding:7px 10px; border-radius:999px; font-size:.75rem; font-weight:800; }
+    .plan { background:#fff; border:1px solid var(--line); border-radius:20px; overflow:hidden; box-shadow:0 11px 33px rgba(21,58,41,.08); }
+    .plan-banner { padding:22px 25px; display:flex; justify-content:space-between; gap:20px; background:var(--deep); color:#fff; }
+    .plan-banner h3 { margin:0; font-size:1.35rem; letter-spacing:-.035em; }
+    .plan-banner p { margin:4px 0 0; color:#cbe4d7; font-size:.85rem; }
+    .plan-body { padding:26px; display:grid; gap:27px; }
+    .safety { border-left:4px solid var(--orange); background:#fff9ee; padding:15px 16px; border-radius:0 10px 10px 0; }
+    .safety b { display:block; margin-bottom:6px; }
+    .safety p { margin:0; font-size:.88rem; color:#614c29; }
+    .plan h4 { margin:0 0 9px; font-size:1.02rem; letter-spacing:-.02em; }
+    ul { margin:0; padding-left:20px; }
+    li { margin:7px 0; color:#40534b; font-size:.9rem; }
+    .timelines { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; }
+    .time { border:1px solid var(--line); border-radius:12px; padding:15px; }
+    .time small { color:var(--green); font-weight:800; text-transform:uppercase; letter-spacing:.07em; font-size:.67rem; }
+    .time h5 { margin:5px 0 7px; letter-spacing:-.02em; font-size:.98rem; }
+    .time ul { padding-left:16px; }
+    .time li { font-size:.82rem; }
+    .script { background:#f5f7f5; border:1px dashed #b8c9bf; border-radius:11px; padding:14px; color:#3f5149; font-size:.9rem; }
+    .actions { display:flex; gap:9px; flex-wrap:wrap; margin-top:4px; }
+    footer { border-top:1px solid var(--line); padding:24px 0 33px; color:var(--muted); font-size:.8rem; }
+    footer .wrap { display:flex; justify-content:space-between; gap:18px; }
+    @media (max-width:880px) { .hero { grid-template-columns:1fr; gap:32px; } .hero h1 { max-width:700px; } }
+    @media (max-width:640px) { .wrap { width:min(100% - 28px, 1160px); } .site-header { padding:16px 0; } .mode { font-size:.66rem; } .top-note { margin-bottom:14px; } .hero { padding:24px 0 45px; } .form-card { padding:19px; border-radius:16px; } .fields, .timelines { grid-template-columns:1fr; } .progress { gap:5px; } .progress button { font-size:.63rem; } .plan-banner, .result-head, footer .wrap { display:block; } .review-chip { margin-top:13px; } .plan-body { padding:19px; } }
+    @media print { body { background:#fff; } .site-header, .top-note, .hero, footer, .hide-print { display:none !important; } #result { display:block !important; padding:0; background:#fff; border:0; } .wrap { width:100%; } .result-head { margin:0 0 18px; } .plan { box-shadow:none; border:0; } .plan-banner { background:#fff; color:#10221c; border-bottom:2px solid #10221c; padding:0 0 14px; } .plan-banner p { color:#40534b; } .timelines { grid-template-columns:repeat(3,1fr); } }
+  </style>
+</head>
+<body>
+  <header class="site-header wrap">
+    <a href="#" class="brand"><span class="brand-mark">+</span>Pawscript</a>
+    <span class="mode">CLINIC PILOT / DEMO</span>
+  </header>
+
+  <aside class="top-note wrap"><strong>Safety boundary:</strong> Pawscript organizes a home-specific recovery-plan draft. It does not diagnose, prescribe, calculate doses, or replace the treating veterinary team.</aside>
+
+  <main class="wrap hero">
+    <section>
+      <p class="eyebrow">Better discharge, built for real homes</p>
+      <h1>Recovery without the guesswork.</h1>
+      <p class="lede">Turn a five-minute home-context intake into a clear, staged recovery plan that a veterinarian can review, tailor, and approve before a patient leaves the clinic.</p>
+      <div class="principles">
+        <div class="principle"><span class="num">1</span><div><b>Understand the home</b><p>Stairs, small spaces, other pets, crate tolerance, and caretaker limits all matter after discharge.</p></div></div>
+        <div class="principle"><span class="num">2</span><div><b>Make the safe path obvious</b><p>Give every caretaker one practical setup, a simple timeline, and an escalation script.</p></div></div>
+        <div class="principle"><span class="num">3</span><div><b>Keep clinicians in control</b><p>Every plan is a draft until the treating team attaches their instructions and approves it.</p></div></div>
+      </div>
+    </section>
+
+    <section class="form-card" aria-labelledby="intake-title">
+      <div class="form-head">
+        <div><h2 id="intake-title">Home recovery intake</h2><p>Build a draft for clinician review.</p></div>
+        <span class="mode">4 MIN</span>
+      </div>
+      <form id="intake">
+        <nav class="progress" aria-label="Intake progress">
+          <button type="button" data-step="1" class="active"><i></i>Patient</button>
+          <button type="button" data-step="2"><i></i>Home</button>
+          <button type="button" data-step="3"><i></i>Care</button>
+          <button type="button" data-step="4"><i></i>Review</button>
+        </nav>
+        <div id="error" class="error" role="alert"></div>
+
+        <fieldset class="step active" data-panel="1">
+          <legend>Who is coming home?</legend>
+          <p class="hint">Start with the clinical context. Required fields are marked <span class="req">*</span>.</p>
+          <div class="fields">
+            <div class="field"><label for="patientName">Patient name <span class="req">*</span></label><input id="patientName" name="patientName" maxlength="80" required placeholder="e.g. Milo" /></div>
+            <div class="field"><label for="clinicianName">Treating clinician</label><input id="clinicianName" name="clinicianName" maxlength="80" placeholder="e.g. Dr. Lee" /></div>
+            <div class="field"><label for="surgeryType">Procedure category <span class="req">*</span></label><select id="surgeryType" name="surgeryType" required><option value="">Select one</option><option value="orthopedic">Orthopedic</option><option value="softTissue">Soft tissue</option><option value="dental">Dental</option><option value="other">Other</option></select></div>
+            <div class="field"><label for="dischargeDate">Discharge date <span class="req">*</span></label><input id="dischargeDate" name="dischargeDate" type="date" required /></div>
+            <div class="field"><label for="activityLevel">Usual energy level <span class="req">*</span></label><select id="activityLevel" name="activityLevel" required><option value="">Select one</option><option value="low">Low</option><option value="medium">Moderate</option><option value="high">High</option></select></div>
+            <div class="field"><label for="weight">Weight (optional)</label><input id="weight" name="weight" maxlength="30" placeholder="e.g. 68 lb" /></div>
+          </div>
+          <div class="switch"><button type="button" class="button next">Continue</button></div>
+        </fieldset>
+
+        <fieldset class="step" data-panel="2">
+          <legend>How is home set up?</legend>
+          <p class="hint">A plan is only useful if it fits the actual space and household.</p>
+          <div class="fields">
+            <div class="field"><label for="stairs">Stairs <span class="req">*</span></label><select id="stairs" name="stairs" required><option value="">Select one</option><option value="none">None</option><option value="inside">Inside</option><option value="outside">Outside</option><option value="both">Inside and outside</option></select></div>
+            <div class="field"><label for="spaceType">Primary recovery space <span class="req">*</span></label><select id="spaceType" name="spaceType" required><option value="">Select one</option><option value="open">Single-level/open space</option><option value="small">Small apartment or tight space</option><option value="multiLevel">Multi-level home</option><option value="yard">Home with yard</option></select></div>
+            <div class="field"><label for="crateTolerance">Crate tolerance <span class="req">*</span></label><select id="crateTolerance" name="crateTolerance" required><option value="">Select one</option><option value="comfortable">Comfortable</option><option value="refuses">Refuses crate</option><option value="anxious">Anxious in crate</option><option value="unknown">Unknown</option></select></div>
+            <div class="field"><label for="otherPets">Other pets at home <span class="req">*</span></label><select id="otherPets" name="otherPets" required><option value="">Select one</option><option value="none">None</option><option value="calm">Calm pet(s)</option><option value="playful">Playful/high-energy pet(s)</option><option value="unknown">Unknown</option></select></div>
+            <div class="field full"><label for="homeNotes">Anything else the clinician should know about the home?</label><textarea id="homeNotes" name="homeNotes" maxlength="500" placeholder="e.g. One flight of stairs to the only bathroom; baby gate available."></textarea></div>
+          </div>
+          <div class="switch"><button type="button" class="button secondary prev">Back</button><button type="button" class="button next">Continue</button></div>
+        </fieldset>
+
+        <fieldset class="step" data-panel="3">
+          <legend>Who will provide care?</legend>
+          <p class="hint">Plan around the people who will actually handle the first two weeks.</p>
+          <div class="fields">
+            <div class="field"><label for="caretakerName">Primary caretaker</label><input id="caretakerName" name="caretakerName" maxlength="80" placeholder="e.g. Alex" /></div>
+            <div class="field"><label for="caretakerMobility">Caretaker lifting/mobility <span class="req">*</span></label><select id="caretakerMobility" name="caretakerMobility" required><option value="">Select one</option><option value="noLimits">No known limits</option><option value="limitedLifting">Limited lifting</option><option value="limitedMobility">Limited mobility</option><option value="needsHelp">Needs another adult</option></select></div>
+          </div>
+          <div class="switch"><button type="button" class="button secondary prev">Back</button><button type="button" class="button next">Continue</button></div>
+        </fieldset>
+
+        <fieldset class="step" data-panel="4">
+          <legend>Ready to build the draft?</legend>
+          <p class="hint">Pawscript will generate home-setup prompts, staged recovery reminders, and questions for clinician review. It will not create medical instructions.</p>
+          <div class="safety"><b>Clinician approval is mandatory.</b><p>Before sharing, attach the treating team's exact instructions, contacts, recheck date, and emergency protocol.</p></div>
+          <div class="switch"><button type="button" class="button secondary prev">Back</button><button id="generate" type="submit" class="button">Generate plan draft</button></div>
+          <p class="privacy">Pilot mode has no database or client portal. Do not enter live client information until your clinic's governance and privacy review is complete.</p>
+        </fieldset>
+      </form>
+    </section>
+  </main>
+
+  <section id="result" hidden>
+    <div class="wrap">
+      <div class="result-head">
+        <div><p class="eyebrow">Pawscript recovery plan</p><h2 id="result-title">Clinician review draft</h2></div>
+        <span class="review-chip">REVIEW REQUIRED BEFORE SHARING</span>
+      </div>
+      <article class="plan" aria-live="polite">
+        <header class="plan-banner"><div><h3 id="patient-title">Recovery plan</h3><p id="patient-meta"></p></div><div class="hide-print"><button id="print" class="button secondary">Print / save PDF</button></div></header>
+        <div class="plan-body">
+          <div class="safety"><b id="safety-title">Clinic review required</b><p id="safety-copy"></p></div>
+          <section><h4>Approval checklist</h4><ul id="approval-list"></ul></section>
+          <section><h4>Set up the home</h4><ul id="setup-list"></ul></section>
+          <section><h4>Stage the recovery</h4><div id="timeline" class="timelines"></div></section>
+          <section><h4>When to contact the clinic</h4><ul id="escalation-list"></ul></section>
+          <section><h4>Questions to settle before discharge</h4><ul id="question-list"></ul></section>
+          <section><h4>Call script for a concern</h4><div id="handoff" class="script"></div></section>
+          <div class="actions hide-print"><button id="start-over" class="button secondary">Start another intake</button></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <footer><div class="wrap"><span>Pawscript is a clinic workflow prototype.</span><span>Built for safer handoffs, not automated veterinary care.</span></div></footer>
+
+  <script>
+    const form = document.querySelector("#intake");
+    const errorBox = document.querySelector("#error");
+    let current = 1;
+
+    function showStep(next) {
+      current = next;
+      document.querySelectorAll(".step").forEach(panel => panel.classList.toggle("active", Number(panel.dataset.panel) === current));
+      document.querySelectorAll(".progress button").forEach(button => {
+        const step = Number(button.dataset.step);
+        button.classList.toggle("active", step === current);
+        button.classList.toggle("complete", step < current);
+      });
+      errorBox.classList.remove("show");
+    }
+
+    function fieldsFor(step) {
+      return [...document.querySelector('[data-panel="' + step + '"]').querySelectorAll("[required]")];
+    }
+
+    function validateStep(step) {
+      const invalid = fieldsFor(step).find(field => !field.value);
+      if (invalid) {
+        errorBox.textContent = "Complete the required field: " + invalid.closest(".field").querySelector("label").textContent.replace("*", "").trim() + ".";
+        errorBox.classList.add("show");
+        invalid.focus();
+        return false;
+      }
+      return true;
+    }
+
+    document.querySelectorAll(".next").forEach(button => button.addEventListener("click", () => {
+      if (validateStep(current)) showStep(Math.min(4, current + 1));
+    }));
+    document.querySelectorAll(".prev").forEach(button => button.addEventListener("click", () => showStep(Math.max(1, current - 1))));
+    document.querySelectorAll(".progress button").forEach(button => button.addEventListener("click", () => {
+      const next = Number(button.dataset.step);
+      if (next <= current || validateStep(current)) showStep(next);
+    }));
+
+    const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]);
+    const items = values => values.map(value => "<li>" + escapeHTML(value) + "</li>").join("");
+
+    function render(plan) {
+      document.querySelector("#result-title").textContent = plan.patient.name + "'s clinician review draft";
+      document.querySelector("#patient-title").textContent = plan.patient.name + " | home recovery plan";
+      document.querySelector("#patient-meta").textContent = plan.patient.procedure + " - discharge " + plan.patient.dischargeDate + " - " + plan.patient.clinician;
+      document.querySelector("#safety-title").textContent = plan.status;
+      document.querySelector("#safety-copy").textContent = plan.safety.headline;
+      document.querySelector("#approval-list").innerHTML = items(plan.safety.approvalChecklist);
+      document.querySelector("#setup-list").innerHTML = items(plan.homeSetup);
+      document.querySelector("#escalation-list").innerHTML = items(plan.escalation);
+      document.querySelector("#question-list").innerHTML = items(plan.clinicQuestions);
+      document.querySelector("#handoff").textContent = plan.handoffScript;
+      document.querySelector("#timeline").innerHTML = plan.timeline.map(stage => "<article class=\"time\"><small>" + escapeHTML(stage.window) + "</small><h5>" + escapeHTML(stage.goal) + "</h5><ul>" + items(stage.actions) + "</ul></article>").join("");
+      const result = document.querySelector("#result");
+      result.hidden = false;
+      result.scrollIntoView({ behavior:"smooth", block:"start" });
+    }
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!validateStep(3)) { showStep(3); return; }
+      const button = document.querySelector("#generate");
+      button.disabled = true;
+      button.textContent = "Building draft...";
+      errorBox.classList.remove("show");
+      const data = Object.fromEntries(new FormData(form).entries());
+      try {
+        const response = await fetch("/api/plan", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data) });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "Unable to generate the plan.");
+        render(payload);
+      } catch (error) {
+        errorBox.textContent = error.message;
+        errorBox.classList.add("show");
+        showStep(4);
+      } finally {
+        button.disabled = false;
+        button.textContent = "Generate plan draft";
+      }
+    });
+
+    document.querySelector("#print").addEventListener("click", () => window.print());
+    document.querySelector("#start-over").addEventListener("click", () => {
+      form.reset(); showStep(1); document.querySelector("#result").hidden = true; window.scrollTo({ top:0, behavior:"smooth" });
+    });
+  </script>
+</body>
+</html>

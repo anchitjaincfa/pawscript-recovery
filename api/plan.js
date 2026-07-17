@@ -60,15 +60,15 @@ function timeline(x) {
   ];
 }
 
-export function buildPlan(raw) {
-  const x = normalize(raw);
-  const missing = required.filter(key => !x[key]);
+export function buildPlan(raw = {}) {
+  const missing = required.filter(key => !text(raw[key]));
   if (missing.length) {
     const error = new Error("Complete the required intake fields before generating a plan.");
     error.code = "INVALID_INTAKE";
     error.missing = missing;
     throw error;
   }
+  const x = normalize(raw);
   const clinicQuestions = [
     "What exact movement, confinement, and toileting limits apply today?",
     "Which changes need a same-day call versus an emergency visit?",

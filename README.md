@@ -6,6 +6,10 @@ Pawscript began with a simple discharge problem: generic recovery sheets assume 
 
 > This repository is a deliberately bounded **clinic-pilot prototype**, not a veterinary-care product. It does not diagnose, prescribe, calculate doses, interpret photos, or replace the treating veterinary team.
 
+## Live demo
+
+[https://pawscript-recovery.vercel.app](https://pawscript-recovery.vercel.app)
+
 ## What is live in this MVP
 
 - A polished four-step intake for patient context, home conditions, and caretaker constraints.

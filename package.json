@@ -1,0 +1,9 @@
+{
+  "name": "pawscript-recovery",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vet-approved, home-specific post-operative recovery plans",
+  "scripts": { "test": "node --test" },
+  "engines": { "node": ">=20" }
+}
